@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+poetry.lock
+*.pytest_cache/
+*.mypy_cache/
+*.ruff_cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Claude Code local session/tool settings (machine-local, not project config)
+.claude/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+postgres_data/
+redis_data/
+qdrant_data/
+
+# Logs
+logs/
+*.log
+
+# Data
+data/
+*.parquet
+*.pkl
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.pid
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# Frontend (future)
+node_modules/
+dist/
+build/
+.next/
+
+# Secret files
+*.pem
+*.key
+*.crt
