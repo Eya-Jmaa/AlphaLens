@@ -1,8 +1,6 @@
 # Frontend Dockerfile - multi-stage: build the Vite app, then serve the static
-# bundle with nginx. The client's default API base (http://localhost:8000)
-# matches docker-compose's backend port mapping, so no build-time API URL is
-# needed for the compose stack; override with --build-arg VITE_API_BASE_URL=...
-# for a different deployment target.
+# bundle with nginx. Leave VITE_API_BASE_URL empty so the browser uses same-origin
+# /api and /health; nginx.conf proxies those to the backend service.
 FROM node:20-alpine AS build
 
 WORKDIR /app

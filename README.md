@@ -113,19 +113,16 @@ Run the full stack (Backend, Frontend, MCP Server, PostgreSQL, Redis, and Qdrant
    # Edit backend/.env and set GROQ_API_KEY=your_key_here
    ```
 
-3. **Launch the entire stack:**
+3. **Launch the entire stack** (backend, frontend, MCP, PostgreSQL, Redis, Qdrant). Database migrations run automatically when the backend starts:
    ```bash
    docker compose --env-file backend/.env up --build
    ```
 
-4. **Initialize database schema (first-time only):**
-   ```bash
-   docker compose exec backend alembic upgrade head
-   ```
+Open the **web dashboard at [http://localhost:8080](http://localhost:8080)** — that is the Docker UI (not Vite on `:5173`). Nginx reverse-proxies `/api` and `/health` to the backend container, so the browser only talks to port 8080.
 
 **Active Endpoints:**
 - **Web Dashboard**: [http://localhost:8080](http://localhost:8080)
-- **FastAPI Documentation**: [http://localhost:8000/api/docs](http://localhost:8000/api/docs)
+- **FastAPI Documentation**: [http://localhost:8080/api/docs](http://localhost:8080/api/docs)
 - **MCP Server (Streamable HTTP)**: [http://localhost:8100](http://localhost:8100)
 
 > [!NOTE]

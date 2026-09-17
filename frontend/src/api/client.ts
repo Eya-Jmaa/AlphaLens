@@ -11,11 +11,10 @@ import {
   SavedReportSummary,
 } from "../types";
 
-// In Vite (`npm run dev`) use same-origin URLs so the browser never calls :8000
-// directly (Cursor's preview and some Windows localhost/IPv6 setups block that).
-// vite.config.ts proxies /api and /health to local uvicorn.
-const API_BASE =
-  (import.meta as any).env?.DEV ? "" : ((import.meta as any).env?.VITE_API_BASE_URL || "http://localhost:8000");
+// Same-origin by default: Vite proxies in `npm run dev`, nginx proxies in Docker.
+// Set VITE_API_BASE_URL only if the UI is hosted separately from the API.
+const _explicitBase = (import.meta as any).env?.VITE_API_BASE_URL as string | undefined;
+const API_BASE = _explicitBase && _explicitBase.length > 0 ? _explicitBase.replace(/\/$/, "") : "";
 
 export class ApiError extends Error {
   status?: number;
