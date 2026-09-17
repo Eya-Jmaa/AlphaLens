@@ -85,15 +85,17 @@ export const MarketTicker: React.FC = () => {
               </span>
               <span
                 className={clsx(
-                  "font-bold font-tabular flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[10.5px]",
+                  "font-bold font-tabular flex items-center gap-1 text-xs",
                   positive
-                    ? "text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-400"
-                    : "text-rose-600 bg-rose-50 dark:bg-rose-950/40 dark:text-rose-400"
+                    ? "text-emerald-600 dark:text-emerald-400"
+                    : "text-rose-600 dark:text-rose-400"
                 )}
               >
-                {positive ? <TrendingUp size={11} /> : <TrendingDown size={11} />}
-                {positive ? "+" : ""}
-                {formatNumber(q.change_percent, 2)}%
+                {positive ? <TrendingUp size={12} strokeWidth={2.4} /> : <TrendingDown size={12} strokeWidth={2.4} />}
+                <span>
+                  {positive ? "+" : ""}
+                  {formatNumber(q.change_percent, 2)}%
+                </span>
               </span>
             </button>
           );
