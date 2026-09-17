@@ -8,7 +8,7 @@ sys.path.append(str(Path(__file__).resolve().parents[2]))
 
 from dotenv import load_dotenv
 
-from app.graph.workflow import FinAgentWorkflow
+from app.graph.workflow import AlphaLensWorkflow
 from app.llm import GroqProvider, LLMConfig
 
 load_dotenv()
@@ -25,7 +25,7 @@ async def test_full_system():
         timeout=60,
     )
     llm = GroqProvider(config)
-    workflow = FinAgentWorkflow(llm)
+    workflow = AlphaLensWorkflow(llm)
 
     queries = [
         "Analyze NVIDIA including recent news and risk",

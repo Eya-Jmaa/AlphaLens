@@ -1,9 +1,9 @@
 """Core Utilities"""
 from app.core.exceptions import (
+    AlphaLensException,
     APIException,
     ConfigurationException,
     DatabaseException,
-    FinAgentException,
     LLMException,
 )
 from app.core.logging import logger, setup_logging
@@ -11,7 +11,7 @@ from app.core.logging import logger, setup_logging
 __all__ = [
     "setup_logging",
     "logger",
-    "FinAgentException",
+    "AlphaLensException",
     "LLMException",
     "ConfigurationException",
     "DatabaseException",

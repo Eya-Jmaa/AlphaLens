@@ -50,10 +50,6 @@ class FinalAnalystAgent(BaseAgent):
                 "strengths": parsed.get("strengths", []),
                 "risks": parsed.get("risks", []),
                 "key_uncertainties": parsed.get("key_uncertainties", []),
-                "disclaimer": (
-                    "This analysis is for informational purposes only and should not be "
-                    "considered personalized financial advice."
-                ),
             }
             self.logger.info("Final report generated (structured)")
             return {
@@ -138,7 +134,6 @@ class FinalAnalystAgent(BaseAgent):
         - Base every claim ONLY on the evidence above. Never invent metrics, news, or filing content.
         - If a section has no supporting evidence, say so explicitly in that field instead of guessing.
         - Never claim certainty about future prices; use evidence-consistent language (e.g. "the available evidence is consistent with...").
-        - This is informational research, not personalized financial advice.
         """
 
         system_prompt = """You are the Final Analyst: a senior financial analyst who synthesizes
@@ -160,7 +155,7 @@ class FinalAnalystAgent(BaseAgent):
         {debate_block}
         Structure: Executive Summary, Fundamental Analysis, News & Sentiment, SEC Insights,
         Technical Analysis, Risk Analysis, Strengths, Risks, Key Uncertainties, Overall Assessment.
-        Be objective and data-driven. Do not invent information. Do not provide personalized investment advice.
+        Be objective and data-driven. Do not invent information.
         """
         system_prompt = """You are a senior financial analyst. Base your analysis solely on the
         evidence provided. Clearly distinguish facts from interpretation."""
@@ -201,8 +196,6 @@ class FinalAnalystAgent(BaseAgent):
             "## Key Uncertainties\n" + "\n".join(f"- {u}" for u in parsed.get("key_uncertainties", [])),
             f"## Overall Assessment\n{parsed.get('overall_outlook', 'Neutral')} "
             f"(confidence: {float(parsed.get('confidence', 0.5)):.0%})",
-            "## Disclaimer\nThis analysis is for informational purposes only and should not be "
-            "considered personalized financial advice.",
         ])
         return "\n\n".join(sections)
 
@@ -218,8 +211,6 @@ class FinalAnalystAgent(BaseAgent):
             "strengths": [],
             "risks": [],
             "key_uncertainties": ["No agent data was available to analyze."],
-            "disclaimer": "This analysis is for informational purposes only and should not be "
-            "considered personalized financial advice.",
         }
 
     def _heuristic_assessment(self, state: Dict[str, Any], report_text: str) -> Dict[str, Any]:
@@ -236,6 +227,4 @@ class FinalAnalystAgent(BaseAgent):
             "strengths": [],
             "risks": [],
             "key_uncertainties": ["Structured synthesis unavailable; this is a heuristic fallback assessment."],
-            "disclaimer": "This analysis is for informational purposes only and should not be "
-            "considered personalized financial advice.",
         }

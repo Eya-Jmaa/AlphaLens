@@ -23,7 +23,7 @@ from app.api.dependencies import get_llm_provider, get_workflow
 from evaluation.dataset import CASES, DATASET_NAME, EvalCase
 
 logging.basicConfig(level=logging.WARNING)  # keep the summary table readable
-logger = logging.getLogger("finagent.evaluation")
+logger = logging.getLogger("alphalens.evaluation")
 
 VALID_OUTLOOKS = {
     "Strongly Positive", "Positive", "Neutral", "Negative",
@@ -167,7 +167,7 @@ def _print_summary(results: List[EvalResult]) -> None:
 
 
 async def main() -> None:
-    parser = argparse.ArgumentParser(description="Run the FinAgent evaluation harness")
+    parser = argparse.ArgumentParser(description="Run the AlphaLens evaluation harness")
     parser.add_argument("--case", help="Run only the named case")
     parser.add_argument("--judge", action="store_true", help="Also run an LLM-judge quality pass (extra Groq calls)")
     args = parser.parse_args()

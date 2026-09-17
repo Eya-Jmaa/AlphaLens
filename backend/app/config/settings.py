@@ -10,13 +10,20 @@ class Settings(BaseSettings):
     """Main application settings"""
 
     # Project
-    PROJECT_NAME: str = "FinAgent"
+    PROJECT_NAME: str = "AlphaLens"
     VERSION: str = "0.1.0"
     ENVIRONMENT: str = "development"
     API_V1_STR: str = "/api/v1"
 
     # CORS
-    BACKEND_CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
+    BACKEND_CORS_ORIGINS: List[str] = [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:8080",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:8080",
+    ]
 
     # Groq API
     GROQ_API_KEY: Optional[str] = None
@@ -36,7 +43,7 @@ class Settings(BaseSettings):
     # External APIs
     FINANCIAL_DATA_API_KEY: Optional[str] = None
     NEWS_API_KEY: Optional[str] = None
-    SEC_USER_AGENT: str = "FinAgent Research Platform (contact@example.com)"
+    SEC_USER_AGENT: str = "AlphaLens Research Platform (contact@example.com)"
 
     # Security
     JWT_SECRET: Optional[str] = None

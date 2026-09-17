@@ -48,5 +48,5 @@ def get_workflow():
     Building it constructs every specialized agent, including the SEC agent's
     embedding model + vector store connection, so this must not happen per-request.
     """
-    from app.graph.workflow import FinAgentWorkflow
-    return FinAgentWorkflow(get_llm_provider(), get_company_service())
+    from app.graph.workflow import AlphaLensWorkflow
+    return AlphaLensWorkflow(get_llm_provider(), get_company_service())

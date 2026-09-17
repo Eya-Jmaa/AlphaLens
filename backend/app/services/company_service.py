@@ -88,7 +88,7 @@ class CompanyService:
     async def search_company(self, query: str) -> List[Dict[str, str]]:
         """Search for companies matching the query"""
         return search_companies(query)
-    
-    async def get_market_summary(self) -> Dict[str, Any]:
-        """Get market summary"""
-        return await self.market.get_market_summary()
+
+    async def get_quotes(self, symbols: List[str]) -> List[Dict[str, Any]]:
+        """Lightweight last-price + day-change quotes for a set of symbols"""
+        return await self.market.get_quotes(symbols)

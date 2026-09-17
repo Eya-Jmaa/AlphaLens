@@ -1,26 +1,26 @@
 """Custom Exceptions"""
 
 
-class FinAgentException(Exception):
-    """Base exception for FinAgent"""
+class AlphaLensException(Exception):
+    """Base exception for AlphaLens"""
     pass
 
 
-class ConfigurationException(FinAgentException):
+class ConfigurationException(AlphaLensException):
     """Configuration error"""
     pass
 
 
-class LLMException(FinAgentException):
+class LLMException(AlphaLensException):
     """LLM provider error"""
     pass
 
 
-class DatabaseException(FinAgentException):
+class DatabaseException(AlphaLensException):
     """Database error"""
     pass
 
 
-class APIException(FinAgentException):
+class APIException(AlphaLensException):
     """External API error"""
     pass

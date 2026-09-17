@@ -42,7 +42,7 @@ async def health():
     """Health check endpoint"""
     return HealthResponse(
         status="operational",
-        service="FinAgent API",
+        service=f"{settings.PROJECT_NAME} API",
         version=settings.VERSION,
     )
 
@@ -57,7 +57,7 @@ async def analyze(
     try:
         logger.info(f"Quick analysis request: {request.query}")
 
-        system_prompt = """You are FinAgent, a financial analysis platform.
+        system_prompt = """You are AlphaLens, a financial analysis platform.
         Be concise and informative. This is a quick, ungrounded response - make clear
         you have not looked at live data, and suggest the user run a full analysis for that.
         """
@@ -76,7 +76,6 @@ async def analyze(
             confidence=0.5,
             sources=[Source(name="Groq LLM (no tools)", type="api", url="https://groq.com")],
             warnings=["This is a quick response with no live data lookup."],
-            disclaimer="This is an informational analysis, not financial advice.",
         )
 
     except HTTPException:
@@ -160,8 +159,21 @@ def _format_agent_result(query: str, state: dict, report_id=None) -> dict:
         },
         "errors": state.get("errors", []),
         "warnings": state.get("warnings", []),
-        "disclaimer": "This is an informational analysis, not financial advice.",
     })
+
+
+@router.get("/companies/search")
+async def search_companies_route(
+    q: str,
+    company_service: CompanyService = Depends(get_company_service),
+):
+    """Search the known-company directory by ticker or name substring (used by
+    the frontend's global search). Small curated fast-path list, not exhaustive -
+    see app/core/known_companies.py.
+
+    Registered before /companies/{ticker} so "search" is never swallowed as a
+    literal ticker path segment."""
+    return {"results": await company_service.search_company(q)}
 
 
 @router.get("/companies/{ticker}", response_model=CompanyInfo)
@@ -186,6 +198,20 @@ async def get_company_info(
         pe_ratio=info.get("pe_ratio"),
         description=f"Data source: {info.get('source', 'unknown')}, updated {info.get('updated_at', 'unknown')}",
     )
+
+
+@router.get("/market/quotes")
+async def get_market_quotes(
+    symbols: str,
+    company_service: CompanyService = Depends(get_company_service),
+):
+    """Lightweight last-price + day-change quotes for a comma-separated list of
+    symbols (indices, ETFs, or stocks - e.g. 'SPY,QQQ,DIA,^VIX,AAPL,NVDA')."""
+    symbol_list = [s.strip().upper() for s in symbols.split(",") if s.strip()]
+    if not symbol_list:
+        raise HTTPException(status_code=422, detail="No symbols provided")
+    quotes = await company_service.get_quotes(symbol_list)
+    return sanitize_for_json({"quotes": quotes})
 
 
 @router.get("/market/{ticker}/chart")
@@ -264,8 +290,13 @@ async def optimize_portfolio(
             result = optimizer.optimize_max_sharpe(returns_data, constraints=constraints)
 
         comparison = optimizer.compare_portfolios(current_weights, result.recommended_weights, returns_data)
+        frontier = optimizer.optimize_efficient_frontier(returns_data)
 
-        return sanitize_for_json({"optimization": result.model_dump(), "comparison": comparison})
+        return sanitize_for_json({
+            "optimization": result.model_dump(),
+            "comparison": comparison,
+            "efficient_frontier": [p.model_dump() for p in frontier],
+        })
     except HTTPException:
         raise
     except Exception as e:
@@ -288,7 +319,6 @@ async def get_report(report_id: str):
     report = await reports_repo.get_report(report_id)
     if report is None:
         raise HTTPException(status_code=404, detail=f"Report '{report_id}' not found")
-    report["disclaimer"] = "This is an informational analysis, not financial advice."
     return sanitize_for_json(report)
 
 

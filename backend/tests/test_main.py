@@ -12,7 +12,7 @@ def test_health_check():
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "healthy"
-    assert data["service"] == "FinAgent"
+    assert data["service"] == "AlphaLens"
 
 
 def test_root_endpoint():
@@ -21,7 +21,7 @@ def test_root_endpoint():
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "operational"
-    assert data["project"] == "FinAgent"
+    assert data["project"] == "AlphaLens"
 
 
 def test_company_info():

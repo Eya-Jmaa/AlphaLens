@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan manager for startup/shutdown events"""
-    logger.info("Starting FinAgent Backend...")
+    logger.info("Starting AlphaLens Backend...")
     logger.info(f"Environment: {settings.ENVIRONMENT}")
     logger.info(f"Groq Model: {settings.GROQ_MODEL}")
 
@@ -28,7 +28,7 @@ async def lifespan(app: FastAPI):
 
     yield
     
-    logger.info("Shutting down FinAgent Backend...")
+    logger.info("Shutting down AlphaLens Backend...")
 
 
 # Create FastAPI app
@@ -76,5 +76,7 @@ async def health_check():
             "api": "ok",
             "groq": "configured" if settings.GROQ_API_KEY else "not configured",
             "database": "configured" if db_configured() else "not configured",
+            "redis": "configured" if settings.REDIS_URL else "not configured",
+            "qdrant": "configured" if settings.QDRANT_URL else "not configured",
         },
     }

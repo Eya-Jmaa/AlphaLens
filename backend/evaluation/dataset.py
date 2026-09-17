@@ -17,7 +17,7 @@ class EvalCase:
     min_report_chars: int = 100
 
 
-DATASET_NAME = "finagent-core-v1"
+DATASET_NAME = "alphalens-core-v1"
 
 CASES: List[EvalCase] = [
     EvalCase(

@@ -1,1 +1,1 @@
-"""FinAgent backend application package"""
+"""AlphaLens backend application package"""

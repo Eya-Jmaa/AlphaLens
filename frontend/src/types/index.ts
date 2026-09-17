@@ -16,7 +16,7 @@ export interface OverallAssessment {
   strengths: string[];
   risks: string[];
   key_uncertainties: string[];
-  disclaimer: string;
+  disclaimer?: string;
 }
 
 export interface StockAnalysisResult {
@@ -54,9 +54,25 @@ export interface NewsAnalysisResult {
   status?: string;
 }
 
+export interface PortfolioRiskMetrics {
+  volatility: number;
+  downside_volatility: number | null;
+  max_drawdown: number;
+  avg_drawdown: number | null;
+  var_95: number;
+  var_99: number | null;
+  cvar_95: number | null;
+  cvar_99: number | null;
+  sharpe_ratio: number;
+  sortino_ratio: number | null;
+  calmar_ratio: number | null;
+  herfindahl_index: number;
+  effective_number: number;
+}
+
 export interface RiskAnalysisResult {
   stock_risks: Record<string, { volatility: number; var_95: number; max_drawdown: number; beta: number }>;
-  portfolio_metrics: Record<string, any>;
+  portfolio_metrics: PortfolioRiskMetrics;
   simulation: Record<string, any>;
   llm_analysis: string;
   tickers: string[];
@@ -113,7 +129,6 @@ export interface AnalysisResult {
   execution: AgentExecution;
   errors: string[];
   warnings: string[];
-  disclaimer: string;
   generatedAt: string;
 }
 
@@ -170,6 +185,13 @@ export interface PortfolioRiskResponse {
   };
 }
 
+export interface EfficientFrontierPoint {
+  return_rate: number;
+  volatility: number;
+  weights: Record<string, number>;
+  sharpe?: number | null;
+}
+
 export interface PortfolioOptimizeResponse {
   optimization: {
     recommended_weights: Record<string, number>;
@@ -186,6 +208,7 @@ export interface PortfolioOptimizeResponse {
     turnover?: number;
     error?: string;
   };
+  efficient_frontier: EfficientFrontierPoint[];
 }
 
 // ---- Persisted reports & saved portfolios (backend, requires DATABASE_URL) ----
@@ -204,4 +227,33 @@ export interface SavedPortfolio {
   cash: number;
   positions: PortfolioPosition[];
   created_at: string;
+}
+
+// ---- Market quotes & company search (top bar / ticker strip) ----
+
+export interface MarketQuote {
+  symbol: string;
+  name: string | null;
+  price: number | null;
+  change: number | null;
+  change_percent: number | null;
+  error?: string | null;
+}
+
+export interface CompanySearchResult {
+  ticker: string;
+  name: string;
+}
+
+export interface HealthCheck {
+  status: string;
+  service: string;
+  version: string;
+  checks: {
+    api: string;
+    groq: string;
+    database: string;
+    redis: string;
+    qdrant: string;
+  };
 }

@@ -21,8 +21,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 COPY backend ./backend
 COPY mcp_server ./mcp_server
 
-RUN useradd -m -u 1000 finagent && chown -R finagent:finagent /repo
-USER finagent
+RUN useradd -m -u 1000 alphalens && chown -R alphalens:alphalens /repo
+USER alphalens
 
 ENV MCP_HOST=0.0.0.0
 ENV MCP_PORT=8100

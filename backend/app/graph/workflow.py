@@ -1,4 +1,4 @@
-"""LangGraph-based orchestration for the FinAgent multi-agent workflow.
+"""LangGraph-based orchestration for the AlphaLens multi-agent workflow.
 
 Supervisor runs once (ticker extraction + routing), fans out to the required
 evidence-gathering agents in parallel (they write to disjoint state keys), then
@@ -101,7 +101,7 @@ def _merge_update(state: Dict[str, Any], update: Dict[str, Any]) -> Dict[str, An
     return merged
 
 
-class FinAgentWorkflow:
+class AlphaLensWorkflow:
     """Builds and runs the compiled LangGraph workflow for a given LLM provider."""
 
     def __init__(self, llm_provider: LLMProvider, company_service: Optional[CompanyService] = None):

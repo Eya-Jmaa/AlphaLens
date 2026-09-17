@@ -1,4 +1,4 @@
-"""FinAgent MCP Server - exposes financial tools over the Model Context Protocol.
+"""AlphaLens MCP Server - exposes financial tools over the Model Context Protocol.
 
 This is a genuine, separately-runnable service for external MCP clients (Claude
 Desktop, other agents) - it reuses the exact same backend services the LangGraph
@@ -18,16 +18,16 @@ from mcp_server import config
 from mcp_server.tools import market, news, portfolio, risk, sec, technical
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("finagent.mcp_server")
+logger = logging.getLogger("alphalens.mcp_server")
 
 server = MCPServer(
-    name="FinAgent Tools",
+    name="AlphaLens Tools",
     version="1.0.0",
     instructions=(
         "Financial research tools backed by live market data (yfinance/Alpha Vantage), "
         "NewsAPI sentiment, SEC EDGAR filings (via RAG), and quantitative risk/portfolio "
         "calculations. Every tool returns real data or an explicit error - never invented "
-        "figures. This is informational research tooling, not financial advice."
+        "figures."
     ),
 )
 
@@ -39,7 +39,7 @@ logger.info(f"Registered tools from {len(_TOOL_MODULES)} module(s): {[m.__name__
 
 
 def main() -> None:
-    logger.info(f"Starting FinAgent MCP server on {config.MCP_HOST}:{config.MCP_PORT} (streamable-http)")
+    logger.info(f"Starting AlphaLens MCP server on {config.MCP_HOST}:{config.MCP_PORT} (streamable-http)")
     server.run(transport="streamable-http", host=config.MCP_HOST, port=config.MCP_PORT)
 
 

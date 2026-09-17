@@ -217,32 +217,32 @@ class MarketService:
             results[ticker] = await self.get_stock_info(ticker)
         return results
     
-    async def get_market_summary(self) -> Dict[str, Any]:
-        """Get overall market summary"""
-        try:
-            indices = {
-                "SPY": "S&P 500",
-                "QQQ": "NASDAQ",
-                "DIA": "Dow Jones",
-            }
-            
-            summary = {}
-            for ticker, name in indices.items():
-                data = await self.get_stock_info(ticker)
-                if not data.get("error"):
-                    summary[name] = {
-                        "price": data.get("price"),
-                        "change_percent": None,
-                    }
-            
-            return {
-                "indices": summary,
-                "updated_at": datetime.now().isoformat(),
-            }
-            
-        except Exception as e:
-            logger.error(f"Failed to get market summary: {e}")
-            return {"error": str(e)}
+    async def get_quotes(self, symbols: List[str]) -> List[Dict[str, Any]]:
+        """Lightweight last-price + day-change quotes for a set of symbols (indices,
+        ETFs, or stocks - yfinance handles '^'-prefixed index tickers like ^VIX the
+        same as any other symbol). Reuses get_stock_info's existing 5-minute cache,
+        so this is cheap on repeat calls within the TTL."""
+        quotes = []
+        for symbol in symbols:
+            data = await self.get_stock_info(symbol)
+            price = data.get("price")
+            previous_close = data.get("previous_close")
+
+            change = None
+            change_percent = None
+            if price is not None and previous_close:
+                change = price - previous_close
+                change_percent = (change / previous_close) * 100
+
+            quotes.append({
+                "symbol": data.get("ticker", symbol.upper()),
+                "name": data.get("name"),
+                "price": price,
+                "change": change,
+                "change_percent": change_percent,
+                "error": data.get("error"),
+            })
+        return quotes
     
     def get_cache_key(self, prefix: str, *args) -> str:
         """Generate cache key"""

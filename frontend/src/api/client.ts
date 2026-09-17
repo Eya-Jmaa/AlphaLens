@@ -1,6 +1,9 @@
 import {
   AgentProgressEvent,
   AnalysisResult,
+  CompanySearchResult,
+  HealthCheck,
+  MarketQuote,
   PortfolioOptimizeResponse,
   PortfolioPosition,
   PortfolioRiskResponse,
@@ -8,11 +11,11 @@ import {
   SavedReportSummary,
 } from "../types";
 
-// `||` (not `??`) deliberately: an unset Vite build-time env var can bake in as
-// an empty string rather than undefined (e.g. via an unset Docker ARG), and an
-// empty string must fall through to the default just like a missing one would.
+// In Vite (`npm run dev`) use same-origin URLs so the browser never calls :8000
+// directly (Cursor's preview and some Windows localhost/IPv6 setups block that).
+// vite.config.ts proxies /api and /health to local uvicorn.
 const API_BASE =
-  (import.meta as any).env?.VITE_API_BASE_URL || (import.meta as any).env?.VITE_API_URL || "http://localhost:8000";
+  (import.meta as any).env?.DEV ? "" : ((import.meta as any).env?.VITE_API_BASE_URL || "http://localhost:8000");
 
 export class ApiError extends Error {
   status?: number;
@@ -185,4 +188,30 @@ export async function savePortfolio(
 export async function listSavedPortfolios(): Promise<SavedPortfolio[]> {
   const res = await getJson<{ portfolios: SavedPortfolio[] }>("/api/v1/portfolios");
   return res.portfolios;
+}
+
+// ---- Market quotes, company search & system health ----
+
+export async function getMarketQuotes(symbols: string[]): Promise<MarketQuote[]> {
+  const res = await getJson<{ quotes: MarketQuote[] }>(
+    `/api/v1/market/quotes?symbols=${encodeURIComponent(symbols.join(","))}`
+  );
+  return res.quotes;
+}
+
+export async function searchCompanies(query: string): Promise<CompanySearchResult[]> {
+  if (!query.trim()) return [];
+  const res = await getJson<{ results: CompanySearchResult[] }>(
+    `/api/v1/companies/search?q=${encodeURIComponent(query)}`
+  );
+  return res.results;
+}
+
+export async function getHealth(): Promise<HealthCheck> {
+  // Root-level, not under /api/v1 - see backend/app/main.py.
+  const res = await fetch(`${API_BASE}/health`);
+  if (!res.ok) {
+    throw new ApiError(await parseErrorBody(res), res.status);
+  }
+  return res.json();
 }

@@ -3,7 +3,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: finagent-backend
+    container_name: alphalens-backend
     ports:
       - "8000:8000"
     environment:
@@ -12,12 +12,15 @@ services:
       - GROQ_MODEL=${GROQ_MODEL:-openai/gpt-oss-120b}
       - GROQ_TEMPERATURE=${GROQ_TEMPERATURE:-0.3}
       - GROQ_MAX_TOKENS=${GROQ_MAX_TOKENS:-2048}
-      - DATABASE_URL=postgresql+asyncpg://finagent:finagent@postgres:5432/finagent
+      # Docker UI is served on :8080; without this the browser blocks API calls (CORS).
+      # JSON list (quoted) — pydantic-settings parses List[str] as JSON, not CSV.
+      - 'BACKEND_CORS_ORIGINS=["http://localhost:8080","http://localhost:5173","http://localhost:3000","http://127.0.0.1:8080","http://127.0.0.1:5173"]'
+      - DATABASE_URL=postgresql+asyncpg://alphalens:alphalens@postgres:5432/alphalens
       - REDIS_URL=redis://redis:6379
       - QDRANT_URL=http://qdrant:6333
       - FINANCIAL_DATA_API_KEY=${FINANCIAL_DATA_API_KEY:-}
       - NEWS_API_KEY=${NEWS_API_KEY:-}
-      - SEC_USER_AGENT=${SEC_USER_AGENT:-FinAgent Research Platform (contact@example.com)}
+      - SEC_USER_AGENT=${SEC_USER_AGENT:-AlphaLens Research Platform (contact@example.com)}
     depends_on:
       postgres:
         condition: service_healthy
@@ -26,25 +29,25 @@ services:
       qdrant:
         condition: service_healthy
     networks:
-      - finagent-network
+      - alphalens-network
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: finagent-frontend
+    container_name: alphalens-frontend
     ports:
       - "8080:80"
     depends_on:
       - backend
     networks:
-      - finagent-network
+      - alphalens-network
 
   mcp-server:
     build:
       context: .
       dockerfile: mcp_server/Dockerfile
-    container_name: finagent-mcp-server
+    container_name: alphalens-mcp-server
     ports:
       - "8100:8100"
     environment:
@@ -54,38 +57,38 @@ services:
       - QDRANT_URL=http://qdrant:6333
       - FINANCIAL_DATA_API_KEY=${FINANCIAL_DATA_API_KEY:-}
       - NEWS_API_KEY=${NEWS_API_KEY:-}
-      - SEC_USER_AGENT=${SEC_USER_AGENT:-FinAgent Research Platform (contact@example.com)}
+      - SEC_USER_AGENT=${SEC_USER_AGENT:-AlphaLens Research Platform (contact@example.com)}
     depends_on:
       redis:
         condition: service_healthy
       qdrant:
         condition: service_healthy
     networks:
-      - finagent-network
+      - alphalens-network
 
   postgres:
     image: postgres:16-alpine
-    container_name: finagent-postgres
+    container_name: alphalens-postgres
     environment:
-      - POSTGRES_USER=finagent
-      - POSTGRES_PASSWORD=finagent
-      - POSTGRES_DB=finagent
+      - POSTGRES_USER=alphalens
+      - POSTGRES_PASSWORD=alphalens
+      - POSTGRES_DB=alphalens
     ports:
       # Host 5434 (not 5432) - avoids clashing with a native/other local Postgres.
       - "5434:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U finagent -d finagent"]
+      test: ["CMD-SHELL", "pg_isready -U alphalens -d alphalens"]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - finagent-network
+      - alphalens-network
 
   redis:
     image: redis:7-alpine
-    container_name: finagent-redis
+    container_name: alphalens-redis
     ports:
       # Host 6380 (not 6379) - avoids clashing with another local Redis container.
       - "6380:6379"
@@ -97,11 +100,11 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - finagent-network
+      - alphalens-network
 
   qdrant:
     image: qdrant/qdrant:latest
-    container_name: finagent-qdrant
+    container_name: alphalens-qdrant
     ports:
       # Host 6334/6335 (not 6333/6334) - avoids clashing with another local Qdrant container.
       - "6334:6333"
@@ -114,7 +117,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - finagent-network
+      - alphalens-network
 
 volumes:
   postgres_data:
@@ -122,5 +125,5 @@ volumes:
   qdrant_data:
 
 networks:
-  finagent-network:
+  alphalens-network:
     driver: bridge

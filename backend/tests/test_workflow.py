@@ -3,7 +3,7 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from app.graph.workflow import FinAgentWorkflow
+from app.graph.workflow import AlphaLensWorkflow
 from app.llm.provider import LLMResponse
 
 
@@ -43,7 +43,7 @@ async def test_workflow_stock_only_run():
     with patch("app.graph.workflow._load_news_agent", return_value=None), \
          patch("app.graph.workflow._load_risk_agent", return_value=None), \
          patch("app.graph.workflow._load_sec_agent", return_value=None):
-        workflow = FinAgentWorkflow(llm, company_service)
+        workflow = AlphaLensWorkflow(llm, company_service)
         result = await workflow.run("Analyze AAPL")
 
     assert result["tickers"] == ["AAPL"]
@@ -64,7 +64,7 @@ async def test_workflow_no_ticker_query_skips_specialized_agents():
     with patch("app.graph.workflow._load_news_agent", return_value=None), \
          patch("app.graph.workflow._load_risk_agent", return_value=None), \
          patch("app.graph.workflow._load_sec_agent", return_value=None):
-        workflow = FinAgentWorkflow(llm)
+        workflow = AlphaLensWorkflow(llm)
         result = await workflow.run("What is a stock market?")
 
     assert result["tickers"] == []
@@ -106,7 +106,7 @@ async def test_workflow_debate_mode_stream_completes_without_crashing():
     with patch("app.graph.workflow._load_news_agent", return_value=None), \
          patch("app.graph.workflow._load_risk_agent", return_value=None), \
          patch("app.graph.workflow._load_sec_agent", return_value=None):
-        workflow = FinAgentWorkflow(llm, company_service)
+        workflow = AlphaLensWorkflow(llm, company_service)
 
         events = [event async for event in workflow.stream("bull and bear case for AAPL", debate=True)]
 

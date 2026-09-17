@@ -1,6 +1,6 @@
 import { AnalysisResult } from "../types";
 
-const STORAGE_KEY = "finagent:report-history";
+const STORAGE_KEY = "alphalens:report-history";
 const MAX_ENTRIES = 25;
 
 export interface ReportHistoryEntry {

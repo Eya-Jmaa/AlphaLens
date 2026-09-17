@@ -39,7 +39,6 @@ class AnalyzeResponse(BaseModel):
     confidence: float = Field(..., ge=0, le=1)
     sources: List[Source] = []
     warnings: List[str] = []
-    disclaimer: str = "This is an informational analysis, not financial advice."
     timestamp: datetime = Field(default_factory=datetime.now)
 
 

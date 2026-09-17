@@ -20,7 +20,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 from app.services.sec_rag_service import SECRagService  # noqa: E402
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger("finagent.ingest_sec")
+logger = logging.getLogger("alphalens.ingest_sec")
 
 
 async def ingest(tickers: list[str], filing_types: list[str] | None) -> None:

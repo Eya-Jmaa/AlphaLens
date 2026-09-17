@@ -27,8 +27,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 COPY . .
 
 # Create non-root user
-RUN useradd -m -u 1000 finagent && chown -R finagent:finagent /app
-USER finagent
+RUN useradd -m -u 1000 alphalens && chown -R alphalens:alphalens /app
+USER alphalens
 
 EXPOSE 8000
 

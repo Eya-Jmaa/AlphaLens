@@ -1,1 +1,1 @@
-"""FinAgent MCP Server package"""
+"""AlphaLens MCP Server package"""

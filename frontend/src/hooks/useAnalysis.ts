@@ -53,7 +53,7 @@ export function useAnalysis() {
       if (err instanceof DOMException && err.name === "AbortError") {
         return;
       }
-      const message = err instanceof ApiError ? err.message : "Could not reach the FinAgent backend.";
+      const message = err instanceof ApiError ? err.message : "Could not reach the AlphaLens backend.";
       setError(message);
       toast.error(message);
     } finally {

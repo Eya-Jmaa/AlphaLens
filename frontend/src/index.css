@@ -2,105 +2,161 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   AlphaLens - Modern Neo-Fintech Design System
+   Exact reference palette matching modern neo-banking & crypto platforms:
+   Soft cool-slate canvas, pure white rounded-2xl cards, deep petrol accents,
+   and clean Plus Jakarta Sans typography.
+   ========================================================================== */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --border: 214.3 31.8% 91.4%;
-    --sidebar: 210 40% 98%;
-    --success: 142.1 76.2% 36.3%;
-    --success-foreground: 355.7 100% 97.3%;
-    --danger: 0 72.2% 50.6%;
+    /* Reference Light Mode (Flagship) */
+    --background: 210 25% 95.5%;            /* #EDF2F7 Soft cool-slate canvas */
+    --background-secondary: 212 28% 92%;   /* #E4EBF2 Secondary container */
+    --foreground: 222 47% 11%;             /* #0F172A Deep slate black */
+    --card: 0 0% 100%;                     /* #FFFFFF Pure white bento cards */
+    --card-foreground: 222 47% 11%;
+    --elevated: 0 0% 100%;                 /* #FFFFFF */
+    --elevated-foreground: 222 47% 11%;
+    --primary: 200 55% 26%;                /* #1E4F67 Deep Oceanic Petrol Blue */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 20% 93%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 22% 93%;
+    --muted-foreground: 215 16% 46%;       /* #627285 Refined muted slate */
+    --subtle-foreground: 215 14% 60%;      /* #8A99AC Subtle text */
+    --accent: 210 20% 93%;
+    --accent-foreground: 222 47% 11%;
+    --border: 214 20% 89%;                 /* #DCE4EC Soft clean hairline */
+    --sidebar: 210 25% 95.5%;
+    --success: 145 68% 40%;                /* #1FC16B Fresh fintech green */
+    --success-foreground: 0 0% 100%;
+    --danger: 0 84% 60%;                   /* #FA4D56 Crisp loss red */
     --danger-foreground: 0 0% 100%;
-    --warning: 32.5 94.6% 43.7%;
+    --warning: 38 92% 48%;                 /* #F59E0B Warm amber */
     --warning-foreground: 0 0% 100%;
+    --info: 204 88% 45%;                   /* #0E83CD */
+    --info-foreground: 0 0% 100%;
+    --radius: 1rem;                        /* 16px rounded-2xl cards */
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --sidebar: 222.2 84% 3.5%;
-    --success: 142.1 70.6% 45.3%;
-    --success-foreground: 144.9 80.4% 10%;
-    --danger: 0 84.2% 60.2%;
-    --danger-foreground: 0 0% 100%;
-    --warning: 35.5 91.7% 55%;
-    --warning-foreground: 20.9 100% 8%;
+    /* Sleek Midnight-Petrol Dark Mode */
+    --background: 222 40% 7%;              /* #0A0E17 Deep charcoal obsidian */
+    --background-secondary: 222 36% 10%;   /* #0F1624 */
+    --foreground: 210 24% 96%;             /* #F1F5F9 */
+    --card: 222 32% 12%;                   /* #141C2C Panel card */
+    --card-foreground: 210 24% 96%;
+    --elevated: 222 30% 15%;               /* #192336 */
+    --elevated-foreground: 210 24% 96%;
+    --primary: 198 80% 48%;                /* #1898D5 */
+    --primary-foreground: 222 40% 7%;
+    --secondary: 222 30% 14%;
+    --secondary-foreground: 210 24% 96%;
+    --muted: 222 30% 14%;
+    --muted-foreground: 215 20% 66%;       /* #8F9FA8 */
+    --subtle-foreground: 215 16% 48%;      /* #5F6E80 */
+    --accent: 222 30% 15%;
+    --accent-foreground: 210 24% 96%;
+    --border: 222 25% 18%;                 /* #222D3E */
+    --sidebar: 222 40% 7%;
+    --success: 145 68% 44%;                /* #22C55E */
+    --success-foreground: 222 40% 7%;
+    --danger: 0 84% 60%;                   /* #FA4D56 */
+    --danger-foreground: 222 40% 7%;
+    --warning: 38 92% 52%;                 /* #F59E0B */
+    --warning-foreground: 222 40% 7%;
+    --info: 198 80% 48%;
+    --info-foreground: 222 40% 7%;
   }
 }
 
 @layer base {
   :root {
-    --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    --font-sans: "Plus Jakarta Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
   }
 
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground selection:bg-primary/20 selection:text-foreground;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.015em;
+  }
+
+  /* Accessible smooth focus ring */
+  :focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+    border-radius: 9999px;
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Soft Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-muted;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary/50 rounded-full;
+  background: hsl(var(--border));
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-primary;
+  background: hsl(var(--subtle-foreground));
 }
 
-/* UI tokens */
-.btn-primary {
-  @apply inline-flex items-center justify-center rounded-md px-4 py-2 bg-primary text-primary-foreground font-semibold shadow-sm hover:opacity-95 transition;
-}
-
+/* Modern Bento Card Primitives */
 .card {
-  @apply bg-card p-6 rounded-xl border border-border shadow-sm;
+  @apply bg-card p-5 md:p-6 rounded-2xl md:rounded-3xl border border-border/70 shadow-[0_4px_20px_-2px_rgba(0,0,0,0.03)] dark:shadow-[0_4px_24px_-4px_rgba(0,0,0,0.3)];
+}
+
+.panel-elevated {
+  @apply bg-elevated border border-border/80 rounded-2xl md:rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.4)];
+}
+
+/* Petrol Gradient Hero Container (From Reference Right Panel) */
+.petrol-card {
+  background: linear-gradient(145deg, #1C4458 0%, #235A74 55%, #296E8E 100%);
+  color: #FFFFFF;
+}
+.dark .petrol-card {
+  background: linear-gradient(145deg, #132E3C 0%, #1A4053 55%, #1F4F67 100%);
+}
+
+/* High-Contrast Pill Buttons (From Reference) */
+.btn-pill-dark {
+  @apply inline-flex items-center justify-center rounded-full px-5 py-2.5 bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold text-xs tracking-tight hover:opacity-90 active:scale-[0.98] transition shadow-sm;
+}
+
+.btn-pill-light {
+  @apply inline-flex items-center justify-center rounded-full px-4 py-2 bg-white text-slate-800 border border-slate-200/80 font-semibold text-xs tracking-tight hover:bg-slate-50 active:scale-[0.98] transition shadow-sm;
+}
+
+/* Financial tabular figures (with clean geometric numbers, not ugly typewriter mono) */
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 /* Loading Spinner */
 .spinner {
-  border: 3px solid rgba(0, 0, 0, 0.08);
+  border: 3px solid hsl(var(--border));
   border-radius: 50%;
   border-top: 3px solid hsl(var(--primary));
-  width: 48px;
-  height: 48px;
-  animation: spin 1s linear infinite;
+  width: 32px;
+  height: 32px;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
@@ -108,24 +164,47 @@
   100% { transform: rotate(360deg); }
 }
 
-/* ---- Chart palette (see dataviz skill / references/palette.md) ---- */
+/* Horizontal Stock Ticker Scroll */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ticker {
+  animation: ticker-scroll 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
+@media print {
+  .no-print { display: none !important; }
+}
+
+/* Chart Palette */
 .viz-root {
-  --viz-grid: #e1e0d9;
-  --viz-series-1: #2a78d6; /* blue */
-  --viz-series-2: #eb6834; /* orange */
-  --viz-series-3: #1baf7a; /* aqua */
-  --viz-series-4: #eda100; /* yellow */
-  --viz-diverging-pos: #2a78d6;
-  --viz-diverging-neg: #e34948;
-  --viz-diverging-mid: #f0efec;
+  --viz-grid: #E8EEF3;
+  --viz-series-1: #1E4F67; /* Petrol Blue */
+  --viz-series-2: #1FC16B; /* Mint Green */
+  --viz-series-3: #FA4D56; /* Loss Red */
+  --viz-series-4: #F59E0B; /* Amber */
+  --viz-diverging-pos: #1FC16B;
+  --viz-diverging-neg: #FA4D56;
+  --viz-diverging-mid: #EBF1F6;
 }
 .dark .viz-root {
-  --viz-grid: #2c2c2a;
-  --viz-series-1: #3987e5;
-  --viz-series-2: #d95926;
-  --viz-series-3: #199e70;
-  --viz-series-4: #c98500;
-  --viz-diverging-pos: #3987e5;
-  --viz-diverging-neg: #e66767;
-  --viz-diverging-mid: #383835;
+  --viz-grid: #1C2738;
+  --viz-series-1: #38BDF8;
+  --viz-series-2: #22C55E;
+  --viz-series-3: #FA4D56;
+  --viz-series-4: #F59E0B;
+  --viz-diverging-pos: #22C55E;
+  --viz-diverging-neg: #FA4D56;
+  --viz-diverging-mid: #162030;
 }

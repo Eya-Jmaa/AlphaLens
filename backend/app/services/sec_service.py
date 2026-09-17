@@ -17,7 +17,7 @@ class SECService:
     
     def __init__(self):
         self.base_url = "https://www.sec.gov"
-        self.user_agent = settings.SEC_USER_AGENT or "FinAgent Research Platform contact@finagent.dev"
+        self.user_agent = settings.SEC_USER_AGENT or "AlphaLens Research Platform contact@alphalens.dev"
         self.session = None
         self.last_request_time = 0
         self.min_request_interval = 0.5  # 500ms between requests

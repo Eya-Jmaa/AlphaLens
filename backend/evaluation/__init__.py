@@ -1,1 +1,1 @@
-"""FinAgent evaluation harness - see runner.py"""
+"""AlphaLens evaluation harness - see runner.py"""

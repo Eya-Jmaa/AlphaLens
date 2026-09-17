@@ -3,18 +3,21 @@ import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
+import { MarketTicker } from "./MarketTicker";
+import { MobileNav } from "./MobileNav";
 import { ErrorBoundary } from "../Common/ErrorBoundary";
 
-const DARK_MODE_KEY = "finagent:dark-mode";
+const DARK_MODE_KEY = "alphalens:dark-mode";
 
 function getInitialDarkMode(): boolean {
   try {
     const stored = localStorage.getItem(DARK_MODE_KEY);
     if (stored !== null) return stored === "true";
   } catch {
-    // localStorage unavailable (private mode etc.) - fall through to system preference
+    // localStorage unavailable (private mode etc.) - fall through to the default below
   }
-  return window.matchMedia?.("(prefers-color-scheme: dark)").matches ?? false;
+  // Default to the modern neo-fintech light aesthetic from the reference design
+  return false;
 }
 
 type PageMeta = { title: string; subtitle?: string };
@@ -23,7 +26,7 @@ export const PageMetaContext = React.createContext<(meta: PageMeta) => void>(() 
 
 export const AppShell: React.FC = () => {
   const [darkMode, setDarkMode] = useState(getInitialDarkMode);
-  const [pageMeta, setPageMeta] = useState<PageMeta>({ title: "Dashboard" });
+  const [pageMeta, setPageMeta] = useState<PageMeta>({ title: "Overview" });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
@@ -36,21 +39,30 @@ export const AppShell: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      <Sidebar />
+      <div className="no-print contents">
+        <Sidebar />
+      </div>
       <div className="flex-1 flex flex-col min-w-0">
-        <Header
-          darkMode={darkMode}
-          onToggleDarkMode={() => setDarkMode((d) => !d)}
-          title={pageMeta.title}
-          subtitle={pageMeta.subtitle}
-        />
-        <main className="flex-1 px-4 md:px-8 py-6 max-w-7xl w-full mx-auto">
+        <div className="no-print">
+          <Header
+            darkMode={darkMode}
+            onToggleDarkMode={() => setDarkMode((d) => !d)}
+            title={pageMeta.title}
+            subtitle={pageMeta.subtitle}
+          />
+          <MarketTicker />
+        </div>
+        <main className="flex-1 px-4 md:px-8 py-6 pb-20 md:pb-6 max-w-[1600px] w-full mx-auto">
           <ErrorBoundary>
             <PageMetaContext.Provider value={setPageMeta}>
               <Outlet />
             </PageMetaContext.Provider>
           </ErrorBoundary>
         </main>
+      </div>
+
+      <div className="no-print">
+        <MobileNav />
       </div>
 
       <Toaster

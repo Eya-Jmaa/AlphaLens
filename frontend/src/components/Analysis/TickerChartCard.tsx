@@ -25,7 +25,7 @@ export const TickerChartCard: React.FC<{ ticker: string }> = ({ ticker }) => {
 
   if (failed) {
     return (
-      <div className="bg-card border border-border rounded-xl p-5 text-sm text-muted-foreground">
+      <div className="bg-card border border-border rounded p-5 text-sm text-muted-foreground">
         Chart data unavailable for {ticker}.
       </div>
     );
@@ -33,14 +33,14 @@ export const TickerChartCard: React.FC<{ ticker: string }> = ({ ticker }) => {
 
   if (!series) {
     return (
-      <div className="bg-card border border-border rounded-xl p-5 flex items-center justify-center h-72">
+      <div className="bg-card border border-border rounded p-5 flex items-center justify-center h-72">
         <Spinner size={28} />
       </div>
     );
   }
 
   return (
-    <div className="bg-card border border-border rounded-xl p-5">
+    <div className="bg-card border border-border rounded p-5">
       <div className="text-sm font-semibold mb-3">{ticker} &middot; Price &amp; Moving Averages</div>
       <PriceChart data={series} />
       <div className="text-xs font-semibold text-muted-foreground mt-4 mb-2">RSI (14)</div>
